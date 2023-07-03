@@ -4,16 +4,20 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas
 
-from src.constants import GRAVITY, HAND_RADIUS, TIMESTEP
+from src.constants import BALL_INITIAL_CONDITIONS, GRAVITY, HAND_INITIAL_CONDITIONS, HAND_RADIUS, TIMESTEP
 from src.exceptions import BallDroppedError
 
 
 class Game():
     def __init__(self) -> None:
-        self.left_hand = Hand(20)
-        self.right_hand = Hand(90)
+        self.left_hand = Hand(HAND_INITIAL_CONDITIONS['x1'])
+        self.right_hand = Hand(HAND_INITIAL_CONDITIONS['x2'])
         self.hands = [self.left_hand, self.right_hand]
-        self.balls = [Ball(20, 0), Ball(50, 40), Ball(90, 0)]
+        self.balls = [
+            Ball(BALL_INITIAL_CONDITIONS['x1'], BALL_INITIAL_CONDITIONS['z1']),
+            Ball(BALL_INITIAL_CONDITIONS['x2'], BALL_INITIAL_CONDITIONS['z2']),
+            Ball(BALL_INITIAL_CONDITIONS['x3'], BALL_INITIAL_CONDITIONS['z3'])
+        ]
         self.t = 0
         self.history = []
 
