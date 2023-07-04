@@ -13,6 +13,7 @@ class TestActions(unittest.TestCase):
     def test_1(self):
         action_df = pandas.read_csv('data/actions.csv')
         actions = action_df.apply(lambda x: Action(*x), axis=1)
+        print("\n", actions[0])
         game = Game()
         game.steps(actions)
         df = game.get_history()
@@ -22,6 +23,7 @@ class TestActions(unittest.TestCase):
     def test_2(self):
         action_df = pandas.read_csv('data/actions.csv')
         actions = action_df.apply(lambda x: Action(*x), axis=1)
+        print(actions)
         game = Game()
         try:
             game.steps(actions)

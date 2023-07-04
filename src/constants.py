@@ -20,6 +20,16 @@ HAND_INITIAL_CONDITIONS = {
 
 }
 
+NEURAL_NETWORK_PARAMETERS = {
+    "input_size": 14,
+    "first_layer_size": 11,
+    "second_layer_size": 11,
+    "third_layer_size": 11,
+    "output_size": 4,
+
+}
+
+FIXED_THROW_VZ = 15
 
 if not os.path.exists('logs'):
     os.mkdir("logs")

@@ -4,8 +4,19 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas
 
-from src.constants import BALL_INITIAL_CONDITIONS, GRAVITY, HAND_INITIAL_CONDITIONS, HAND_RADIUS, TIMESTEP
-from src.exceptions import BallDroppedError
+from src.constants import *
+from src.exceptions import *
+
+
+class Action():
+    def __init__(self, left_hand_throw_vx, right_hand_throw_vx, left_hand_vx, right_hand_vx) -> None:
+        self.left_hand_throw_vx = left_hand_throw_vx
+        self.right_hand_throw_vx = right_hand_throw_vx
+        self.left_hand_vx = left_hand_vx
+        self.right_hand_vx = right_hand_vx
+
+    def throw(self):
+        return self.left_hand_throw_vx, self.right_hand_throw_vx
 
 
 class Game():
@@ -29,7 +40,7 @@ class Game():
                 self.log_state()
                 raise
 
-    def step(self, action):
+    def step(self, action: Action):
         self.action = action
         self.t += 1
         throw = action.throw()
@@ -40,12 +51,13 @@ class Game():
                 if hand.contains(ball):
                     # Ball in hand
                     caught = True
-                    vx, vz = throw[2*ii:2*(ii+1)]
-                    if vx == vz == 0:
+                    [vx] = throw[ii:ii+1]
+                    if vx == 0:
                         # Keep ball in hand 
                         ball.x = hand.x
                     else:
-                        ball.throw(vx, vz)
+                        # Yeet
+                        ball.throw(vx, FIXED_THROW_VZ)
                         ball.move()
             if not caught:
                 # Move ball (freefall)
@@ -73,12 +85,10 @@ class Game():
             "ball3z": self.balls[2].z,
             "ball3vx": self.balls[2].vx,
             "ball3vz": self.balls[2].vz,
-            "action_throw_h1_vx": self.action.throw_h1_vx,
-            "action_throw_h1_vz": self.action.throw_h1_vz,
-            "action_throw_h2_vx": self.action.throw_h2_vx,
-            "action_throw_h2_vz": self.action.throw_h2_vz,
             "action_left_hand_vx": self.action.left_hand_vx,
             "action_right_hand_vx": self.action.right_hand_vx,
+            "action_left_hand_throw_vx": self.action.left_hand_throw_vx,
+            "action_right_hand_throw_vx": self.action.right_hand_throw_vx,
         }
         self.history.append(row)
 
@@ -146,16 +156,3 @@ class Throw():
         self.vx = vx
         self.vz = vz
         return
-
-
-class Action():
-    def __init__(self, throw_h1_vx, throw_h1_vz, throw_h2_vx, throw_h2_vz, left_hand_vx, right_hand_vx) -> None:
-        self.throw_h1_vx = throw_h1_vx
-        self.throw_h1_vz = throw_h1_vz
-        self.throw_h2_vx = throw_h2_vx
-        self.throw_h2_vz = throw_h2_vz
-        self.left_hand_vx = left_hand_vx
-        self.right_hand_vx = right_hand_vx
-    
-    def throw(self):
-        return self.throw_h1_vx, self.throw_h1_vz, self.throw_h2_vx, self.throw_h2_vz
