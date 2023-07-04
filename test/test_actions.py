@@ -2,8 +2,9 @@ import unittest
 
 import pandas
 
+from src.agent import Agent
 from src.constants import *
-from src.exceptions import BallDroppedError
+from src.exceptions import BallOutOfBoundsError
 from src.state import Action, Game
 
 pandas.set_option('display.max_rows', None)
@@ -27,8 +28,15 @@ class TestActions(unittest.TestCase):
         game = Game()
         try:
             game.steps(actions)
-        except:
-            BallDroppedError
+        except BallOutOfBoundsError:
+            pass
         game.write_history()
         game.plot_history()
         return
+
+    def test_3(self):
+        game = Game()
+        agent = Agent(game)
+        actions = [agent.choose_action()] * 10
+        game.steps(actions)
+

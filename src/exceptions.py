@@ -1,14 +1,18 @@
-class BallDroppedError(Exception):
+class BallOutOfBoundsError(Exception):
     pass
 
 
-class BallTooHighError(Exception):
+class BallDroppedError(BallOutOfBoundsError):
     pass
 
 
-class BallLeftError(Exception):
+class BallTooHighError(BallOutOfBoundsError):
     pass
 
 
-class BallRightError(Exception):
+class BallLeftError(BallOutOfBoundsError):
+    pass
+
+
+class BallRightError(BallOutOfBoundsError):
     pass

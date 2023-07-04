@@ -36,7 +36,7 @@ class Game():
         for action in actions:
             try:
                 self.step(action)
-            except BallDroppedError:
+            except BallOutOfBoundsError:
                 self.log_state()
                 raise
 
